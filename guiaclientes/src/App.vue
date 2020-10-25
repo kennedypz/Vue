@@ -1,9 +1,10 @@
 <template>
   <div id="app">
-    <div class="buttons">
+    <!-- botões da lib bulma -->
+    <!-- <div class="buttons">
       <button class="button is-primary">Primary</button>
       <button class="button is-link">Link</button>
-    </div>
+    </div> -->
     <h3>Cadastro: </h3>
     <small id="nomeErro" v-show="deuErro">O nome é inválido, tente novamente!</small> <br>
     <input type="text" placeholder="nome" v-model="nomeField"> <br>
