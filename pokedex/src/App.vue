@@ -1,4 +1,4 @@
-<template>
+<template id="teste">
   <div id="app">
 
     <img src="./assets/images/Pokedex.png">
@@ -8,7 +8,7 @@
       <div class="field has-addons">
 
         <div class="control has-icons-left has-icons-right is-expanded">
-            <input type="text" class="input is-rounded"  v-model="busca" placeholder="Buscar Pokémon pelo nome">
+            <input type="text" class="input is-rounded" @keyup.enter="buscar"  v-model="busca" placeholder="Buscar Pokémon pelo nome">
         </div>
 
         <p class="control">
@@ -17,10 +17,12 @@
 
       </div>
       
-      <div v-for="(poke, index) in filteredPokemons" :key="poke.url">
-        <Pokemon :pokedexNumber="index+1" :name="poke.name" :url="poke.url"/>
+      <div class="columns is-multiline">
+        <div class="column is-one-third" v-for="(poke, index) in filteredPokemons" :key="poke.url">
+          <Pokemon :pokedexNumber="index+1" :name="poke.name" :url="poke.url"/>
+        </div>
       </div>
-
+      
     </div>
 
   </div>
@@ -82,7 +84,8 @@ export default {
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
-    margin-top: 60px;
-  }
+    padding-top: 60px;
+    background-color: #808B96;
+  };
 
 </style>
