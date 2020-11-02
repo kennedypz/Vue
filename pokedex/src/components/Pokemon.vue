@@ -28,6 +28,7 @@ import axios from 'axios';
 
 export default {
     created: function(){
+        // console.log(this.url);
         axios.get(this.url).then(
             response => {
                 this.pokemon.type = response.data.types[0].type.name;
@@ -49,7 +50,7 @@ export default {
         }
     },
     props:{
-        pokedexNumber: Number,
+        pokedexNumber: String,
         name: String,
         url: String,
     },

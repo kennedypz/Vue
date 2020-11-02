@@ -16,10 +16,46 @@
         </p>
 
       </div>
+
+      <div class="columns">
+
+        <div class="column">
+          <div class="content">
+            <button class="button is-link is-rounded" v-if="geracao === 1" @click="trocarGeracao(1)">1ª Geração</button>
+            <button class="button is-primary is-rounded" v-else @click="trocarGeracao(1)">1ª Geração</button>
+          </div>
+        </div>
+
+        <div class="column">
+          <div class="content">
+            <button class="button is-link is-rounded" v-if="geracao === 2" @click="trocarGeracao(2)">2ª Geração</button>
+            <button class="button is-primary is-rounded" v-else @click="trocarGeracao(2)">2ª Geração</button>
+          </div>
+        </div>
+
+        <div class="column">
+          <div class="content">
+            <button class="button is-link is-rounded" v-if="geracao === 3" @click="trocarGeracao(3)">3ª Geração</button>
+            <button class="button is-primary is-rounded" v-else @click="trocarGeracao(3)">3ª Geração</button>
+          </div>
+        </div>
+
+        <div class="column">
+          <div class="content">
+            <button class="button is-link is-rounded" v-if="geracao === 4" @click="trocarGeracao(4)">4ª Geração</button>
+            <button class="button is-primary is-rounded" v-else @click="trocarGeracao(4)">4ª Geração</button>
+          </div>
+        </div>
+
+      </div>
       
-      <div class="columns is-multiline">
-        <div class="column is-one-third" v-for="(poke, index) in filteredPokemons" :key="poke.url">
-          <Pokemon :pokedexNumber="index+1" :name="poke.name" :url="poke.url"/>
+      <div v-if="loading == true">
+        <progress class="progress is-large is-info" max="100">60%</progress>
+      </div>
+      
+      <div class="columns is-multiline" v-else>
+        <div class="column is-one-third" v-for="(poke) in filteredPokemons" :key="poke.url">
+          <Pokemon :pokedexNumber="getPokedexNumber(poke.url)" :name="poke.name" :url="poke.url"/>
         </div>
       </div>
       
@@ -43,15 +79,19 @@ export default {
       pokemons: [],
       filteredPokemons: [],
       busca: '',
+      geracao: 1,
+      loading: false,
     }
   },
   created: function(){
+    this.loading = true;
     axios.get("https://pokeapi.co/api/v2/pokemon?limit=151&offset=0").then(
       response => {
         this.pokemons = response.data.results;
         this.filteredPokemons = response.data.results;
       }
     );
+    this.loading = false;
   },
   methods:{
     buscar: function(){
@@ -62,6 +102,45 @@ export default {
       } else{
         this.filteredPokemons = this.pokemons.filter(pokemon => pokemon.name.match(this.busca.toLocaleLowerCase()))
       }
+    },
+    trocarGeracao: function(geracao){
+      this.geracao = geracao;
+      this.loading = true;
+      if(this.geracao === 1){
+        axios.get("https://pokeapi.co/api/v2/pokemon?limit=151&offset=0").then(
+          response => {
+            this.pokemons = response.data.results;
+            this.filteredPokemons = response.data.results;
+          }
+        );
+      } else if(this.geracao === 2){
+        axios.get("https://pokeapi.co/api/v2/pokemon?limit=251&offset=151").then(
+          response => {
+            this.pokemons = response.data.results;
+            this.filteredPokemons = response.data.results;
+          }
+        );
+      } else if(this.geracao === 3){
+        axios.get("https://pokeapi.co/api/v2/pokemon?limit=386&offset=251").then(
+          response => {
+            this.pokemons = response.data.results;
+            this.filteredPokemons = response.data.results;
+          }
+        );
+      } else if(this.geracao === 4){
+        axios.get("https://pokeapi.co/api/v2/pokemon?limit=493&offset=386").then(
+          response => {
+            this.pokemons = response.data.results;
+            this.filteredPokemons = response.data.results;
+          }
+        );
+      }
+      this.loading = false;
+    },
+    getPokedexNumber: function(url){
+      var number = url.slice(0, -1);
+      number = number.substring(number.lastIndexOf('/')+1);
+      return `#${number}`;
     }
   },
   // computed: {
